@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "Enviroment Configuration"
+        Parameters:
+          - Enviroment  
+          - Cluster
+    ParameterLabels:
+      Enviroment:
+        default: "Enviroment"
+      Cluster:
+        default: "dev"
+
+Parameters:
+  Enviroment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - qa
+      - hmg
+      - prod
+  Cluster:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - qa
+      - hmg
+      - prod      
+
+Resources:
+  productsCreatedProductSNS:
+    Type: AWS::SNS::Topic
+    Properties: 
+      DisplayName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-created-product"]]
+      TopicName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment,  "-created-product"]]
+
+  productsViewedProductSNS:
+      Type: AWS::SNS::Topic
+      Properties: 
+        DisplayName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-viewed-product"]]
+        TopicName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment,  "-viewed-product"]]

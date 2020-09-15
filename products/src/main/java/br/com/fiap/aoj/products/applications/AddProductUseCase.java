@@ -2,8 +2,10 @@ package br.com.fiap.aoj.products.applications;
 
 import br.com.fiap.aoj.products.data.ProductRepository;
 import br.com.fiap.aoj.products.domain.ProductDomain;
+import br.com.fiap.aoj.products.events.PublishEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,9 +16,12 @@ public class AddProductUseCase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddProductUseCase.class);
 
 	private final ProductRepository productRepository;
+	private final PublishEvent publishEvent;
 
-	public AddProductUseCase(final ProductRepository productRepository) {
+	public AddProductUseCase(final ProductRepository productRepository,
+			@Qualifier("createdProductEvent") final PublishEvent publishEvent) {
 		this.productRepository = productRepository;
+		this.publishEvent = publishEvent;
 	}
 
 	public Optional<ProductDomain> add(final ProductDomain productDomain){
@@ -33,6 +38,6 @@ public class AddProductUseCase {
 	}
 
 	private void pushCreatedProductEvent(final ProductDomain productDomain) {
-		//TODO: Realizar implementação de recebimento de evento
+		publishEvent.publish(productDomain);
 	}
 }

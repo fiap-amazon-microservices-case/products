@@ -2,8 +2,10 @@ package br.com.fiap.aoj.products.applications;
 
 import br.com.fiap.aoj.products.data.ProductRepository;
 import br.com.fiap.aoj.products.domain.ProductDomain;
+import br.com.fiap.aoj.products.events.PublishEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,9 +17,12 @@ public class GetProductUseCase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GetProductUseCase.class);
 
 	private final ProductRepository productRepository;
+	private final PublishEvent publishEvent;
 
-	public GetProductUseCase(final ProductRepository productRepository) {
+	public GetProductUseCase(final ProductRepository productRepository,
+			@Qualifier("viewedProductEvent") final PublishEvent publishEvent) {
 		this.productRepository = productRepository;
+		this.publishEvent = publishEvent;
 	}
 
 	public Optional<ProductDomain> get(final UUID productId){
@@ -34,6 +39,6 @@ public class GetProductUseCase {
 	}
 
 	private void pushViewedProductEvent(final ProductDomain productDomain) {
-		//TODO: Implemenar evento de visualização do produto
+		publishEvent.publish(productDomain);
 	}
 }
