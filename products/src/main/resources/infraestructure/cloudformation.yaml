@@ -34,14 +34,33 @@ Parameters:
       - prod      
 
 Resources:
+
+  productsCategoryCreatedProductSQS:
+    Type: AWS::SQS::Queue
+    Properties:
+      DelaySeconds: 0
+      MaximumMessageSize: 262144
+      MessageRetentionPeriod: 1209600
+      QueueName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-productscategory-created-product"]]
+      ReceiveMessageWaitTimeSeconds: 0
+
+  productsViewsViewedProductSQS:
+    Type: AWS::SQS::Queue
+    Properties:
+      DelaySeconds: 0
+      MaximumMessageSize: 262144
+      MessageRetentionPeriod: 1209600
+      QueueName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-productsviews-viewed-product"]]
+      ReceiveMessageWaitTimeSeconds: 0
+
   productsCreatedProductSNS:
     Type: AWS::SNS::Topic
     Properties: 
-      DisplayName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-created-product"]]
-      TopicName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment,  "-created-product"]]
+      DisplayName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-products-created-product"]]
+      TopicName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment,  "-products-created-product"]]
 
   productsViewedProductSNS:
       Type: AWS::SNS::Topic
       Properties: 
-        DisplayName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-viewed-product"]]
-        TopicName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment,  "-viewed-product"]]
+        DisplayName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment, "-products-viewed-product"]]
+        TopicName: !Join ["", [ !Ref Cluster, "-", !Ref Enviroment,  "-products-viewed-product"]]

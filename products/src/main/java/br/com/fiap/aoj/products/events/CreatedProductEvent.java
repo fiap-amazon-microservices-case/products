@@ -6,13 +6,21 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component("createdProductEvent")
 class CreatedProductEvent implements PublishEvent{
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER;
+	static{
+		OBJECT_MAPPER = new ObjectMapper();
+		OBJECT_MAPPER //
+				.registerModule(new Jdk8Module()) //
+				.registerModule(new JavaTimeModule());
+	}
 
 	private final AmazonSNS amazonSNS;
 	private final String topicArn;

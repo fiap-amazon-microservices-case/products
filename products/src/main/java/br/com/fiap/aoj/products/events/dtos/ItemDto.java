@@ -1,5 +1,8 @@
 package br.com.fiap.aoj.products.events.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemDto {
 
 	private String productId;

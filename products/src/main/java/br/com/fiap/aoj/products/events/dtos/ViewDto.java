@@ -1,5 +1,7 @@
 package br.com.fiap.aoj.products.events.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ public class ViewDto {
 
 	private UUID id = UUID.randomUUID();
 
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime viewedAt = LocalDateTime.now();
 
 	private ItemDto item;
